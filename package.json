@@ -16,5 +16,9 @@
     "persist"
   ],
   "author": "Carlos Morgado",
-  "license": "BSD"
+  "license": "BSD",
+	"dependencies": {
+		"sqlite3": "*",
+		"node-uuid": "*"
+	}
 }
