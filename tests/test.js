@@ -2,7 +2,7 @@
 var Persistance = require('../').Persistance;
 var repl = require('repl');
 
-var persistance = new Persistance({dbtype: 'sqlite3', dbname: 'teststore'});
+var persistance = new Persistance({dbtype: 'sqlite3', dbname: '/tmp/teststore'});
 
 var Foo = persistance.define('foo', {
 	i: 1,
