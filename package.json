@@ -20,5 +20,11 @@
 	"dependencies": {
 		"sqlite3": "*",
 		"node-uuid": "*"
+	},
+	"devDependencies": {
+		"vows": "*"
+	},
+	"scripts": {
+		"test": "vows --spec"
 	}
 }
