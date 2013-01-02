@@ -1,13 +1,17 @@
 
 var assert = require('assert')
 ,		vows = require('vows')
+,		fs = require('fs')
 ,		Persistance = require('../').Persistance;
 
 'use strict';
 
 vows.describe('basic tests').addBatch({
 	'a store': {
-		topic: new Persistance({dbtype: 'sqlite3', dbname: '/tmp/teststore'}),
+		topic: function () {
+			fs.unlinkSync('/tmp/teststore');
+			return new Persistance({dbtype: 'sqlite3', dbname: '/tmp/teststore'});
+		},
 		'is a object': function (store) {
 			assert.isObject(store);
 		},
@@ -27,7 +31,6 @@ vows.describe('basic tests').addBatch({
 				assert.isObject(foo);
 			},
 			'which has a schema': function (foo) {
-				console.log(foo);
 				assert.isObject(foo._persistschema);
 			},
 			'and a type': function (foo) {
@@ -49,6 +52,17 @@ vows.describe('basic tests').addBatch({
 					assert.equal(obj.s, 'helo');
 					assert.deepEqual(obj.a, []);
 					assert.deepEqual(obj.o, {});
+				}
+			},
+			'if you create a named object': {
+				'topic': function (foo) { 
+					foo.create('xpto').save()
+					foo.get('xpto', this.callback)
+				},
+				'you can get it back': function (err, data) {
+					assert.isNull(err);
+					assert.isObject(data);
+					assert.isObject(data.xpto);
 				}
 			}
 
