@@ -64,11 +64,20 @@ vows.describe('basic tests').addBatch({
 					assert.isObject(data);
 					assert.isObject(data.xpto);
 				}
+			},
+			'you can search for it': {
+				'topic': function (foo) {
+					foo.search({i: 1}, this.callback);
+				},
+				'and get it back': function (err, data) {
+					assert.isNull(err);
+					assert.isObject(data);
+					assert.isObject(data.xpto);
+				}
 			}
-
 		}
 
-
 	}
+
 }).export(module);
 
