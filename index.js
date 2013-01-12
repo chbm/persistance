@@ -1,3 +1,3 @@
 
-exports.Persistance = require('./lib/persistance.js').Persistance;
+exports.make = require('./lib/persistance.js').make;
 

@@ -2,20 +2,22 @@
 var assert = require('assert')
 ,		vows = require('vows')
 ,		fs = require('fs')
-,		Persistance = require('../').Persistance;
+,		Persistance = require('../');
 
 'use strict';
 
 vows.describe('basic tests').addBatch({
 	'a store': {
 		topic: function () {
-			fs.unlinkSync('/tmp/teststore');
-			return new Persistance({dbtype: 'sqlite3', dbname: '/tmp/teststore'});
+			var vowsthis = this;
+			fs.unlink('/tmp/teststore', function (err) {
+				Persistance.make({dbtype: 'sqlite3', dbname: '/tmp/teststore'}, vowsthis.callback);
+			});
 		},
-		'is a object': function (store) {
+		'is a object': function (err, store) {
 			assert.isObject(store);
 		},
-		'which has define': function (store) {
+		'which has define': function (err, store) {
 			assert.isFunction(store.define);
 		},
 		'a defined object': {
@@ -55,11 +57,12 @@ vows.describe('basic tests').addBatch({
 				}
 			},
 			'if you create a named object': {
-				'topic': function (foo) { 
-					foo.create('xpto').save()
-					foo.get('xpto', this.callback)
+				'topic': function (foo) {
+					foo.create('xpto').save();
+					foo.get('xpto', this.callback);
 				},
 				'you can get it back': function (err, data) {
+					console.log(err, data);
 					assert.isNull(err);
 					assert.isObject(data);
 					assert.isObject(data.xpto);
