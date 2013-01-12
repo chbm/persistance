@@ -62,7 +62,6 @@ vows.describe('basic tests').addBatch({
 					foo.get('xpto', this.callback);
 				},
 				'you can get it back': function (err, data) {
-					console.log(err, data);
 					assert.isNull(err);
 					assert.isObject(data);
 					assert.isObject(data.xpto);
