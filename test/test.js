@@ -6,7 +6,7 @@ var assert = require('assert')
 
 'use strict';
 
-['sqlite3', 'memory'].forEach(function (st) {
+['sqlite3' ].forEach(function (st) {
 	vows.describe(st+' tests').addBatch({
 		'a store': {
 			topic: function () {
@@ -59,8 +59,10 @@ var assert = require('assert')
 				},
 				'if you create a named object': {
 					'topic': function (foo) {
-						foo.create('xpto').save(function () {});
-						foo.get('xpto', this.callback);
+						var vcb = this.callback;
+						foo.create('xpto').save(function () {
+							foo.get('xpto', vcb);
+						});
 					},
 					'you can get it back': function (err, data) {
 						assert.isNull(err);
@@ -70,12 +72,15 @@ var assert = require('assert')
 				},
 				'you can search for it': {
 					'topic': function (foo) {
-						foo.search({i: 1}, this.callback);
+						var vcb = this.callback;
+						foo.create('zing', {i : 2}).save(function () {
+							foo.search({i: 2}, vcb);
+						});
 					},
 					'and get it back': function (err, data) {
 						assert.isNull(err);
 						assert.isObject(data);
-						assert.isObject(data.xpto);
+						assert.isObject(data.zing);
 					}
 				}
 			}
