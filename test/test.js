@@ -6,7 +6,7 @@ var assert = require('assert')
 
 'use strict';
 
-['sqlite3' ].forEach(function (st) {
+['sqlite3', 'memory', 'leveldb' ].forEach(function (st) {
 	vows.describe(st+' tests').addBatch({
 		'a store': {
 			topic: function () {
