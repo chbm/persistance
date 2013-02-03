@@ -95,6 +95,21 @@ var assert = require('assert')
 						assert.isObject(data);
 						assert.isObject(data.zing);
 					}
+				},
+				'but after you delete it': {
+					'topic': function (foo) {
+						var vcb = this.callback;
+						foo.create('zzz').save(function (err, obj) {
+							obj.delete(function (err) {
+								foo.get('zzz', vcb);
+							});
+						});
+					},
+					'you cant get it back': function (err, data) {
+						assert.isNull(err);
+						assert.isObject(data);
+						assert.isEmpty(data);
+					}
 				}
 			}
 
