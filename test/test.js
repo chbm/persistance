@@ -11,14 +11,27 @@ var assert = require('assert')
 		'a store': {
 			topic: function () {
 				var vowsthis = this;
-				fs.unlink('/tmp/teststore', function (err) {
-					Persistance.make({dbtype: st, dbname: '/tmp/teststore'}, vowsthis.callback);
+				fs.readdir('/tmp/teststore/', function (err, data) {
+					if (err) {
+						fs.unlink('/tmp/teststore', function (err) {
+							Persistance.make({dbtype: st, dbname: '/tmp/teststore'}, vowsthis.callback);
+						});
+					} else if (data) {
+						data.forEach(function (x) {
+							fs.unlinkSync('/tmp/teststore/'+x);
+						});
+						fs.rmdir('/tmp/teststore', function (err) {
+							Persistance.make({dbtype: st, dbname: '/tmp/teststore'}, vowsthis.callback);
+						});
+					}
 				});
 			},
 			'is a object': function (err, store) {
+				assert.isNull(err);
 				assert.isObject(store);
 			},
 			'which has define': function (err, store) {
+				assert.isNull(err);
 				assert.isFunction(store.define);
 			},
 			'a defined object': {
