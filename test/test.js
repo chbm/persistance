@@ -55,11 +55,14 @@ var assert = require('assert')
 				'which is foo': function (foo) {
 					assert.equal(foo._persistschema._persisttype, 'foo');
 				},
+
 				'and a create function': function (foo) {
 					assert.isFunction(foo.create);
 				},
 				'which returns an object': {
-					'topic': function (foo) { return foo.create(); },
+					'topic': function (foo) {
+						return foo.create();
+					},
 					'which can be saved': function (obj) {
 						assert.isFunction(obj.save);
 					},
@@ -70,6 +73,7 @@ var assert = require('assert')
 						assert.deepEqual(obj.o, {});
 					}
 				},
+
 				'if you create a named object': {
 					'topic': function (foo) {
 						var vcb = this.callback;
@@ -83,6 +87,7 @@ var assert = require('assert')
 						assert.isObject(data.xpto);
 					}
 				},
+
 				'you can search for it': {
 					'topic': function (foo) {
 						var vcb = this.callback;
@@ -96,6 +101,7 @@ var assert = require('assert')
 						assert.isObject(data.zing);
 					}
 				},
+
 				'but after you delete it': {
 					'topic': function (foo) {
 						var vcb = this.callback;
@@ -109,6 +115,25 @@ var assert = require('assert')
 						assert.isNull(err);
 						assert.isObject(data);
 						assert.isEmpty(data);
+					}
+				},
+
+				'if you have some objects starting with same prefix': {
+					'topic': function (foo) {
+						var vcb = this.callback;
+						foo.create('qwerta').save(function (err, obj) {
+							foo.create('qwertb').save(function (err, obj) {
+								debugger
+								foo.startingWith('qwert', vcb);
+							});
+						});
+					},
+					'you can get some by prefix': function (err, data) {
+						debugger
+						assert.isNull(err);
+						assert.isObject(data);
+						assert.isObject(data.qwerta);
+						assert.isObject(data.qwertb);
 					}
 				}
 			}
