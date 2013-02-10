@@ -18,11 +18,12 @@
   "author": "Carlos Morgado",
   "license": "BSD",
 	"dependencies": {
-		"sqlite3": "*",
 		"node-uuid": "*"
 	},
 	"devDependencies": {
-		"vows": "*"
+		"vows": "*",
+		"sqlite3": "*",
+		"levelup": "*"
 	},
 	"scripts": {
 		"test": "vows --spec"
